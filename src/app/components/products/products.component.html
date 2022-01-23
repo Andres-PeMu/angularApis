@@ -1,0 +1,28 @@
+<button (click)="createNewProduc()" >create</button>
+<button (click)="onShowDetalle('121212')" >error</button>
+<div class="products--grid">
+  <app-product
+    [product]="product"
+    *ngFor="let product of products"
+    (addedProduct)="onAddToShoppingCart($event)"
+    (showProduct)="onShowDetalle($event)"
+  ></app-product>
+  <button (click)="loadMore()" >New Page</button>
+</div>
+<div class="products--detail" [class.active]="showProductDetail" >
+  {{ statusDetile }}
+  <div *ngIf="productChossen" >
+    <button (click)="toggleProductDetail()" >close</button>
+    <h1>{{ productChossen.title }}</h1>
+    <swiper
+      [slidesPerView]="1"
+    >
+    <ng-template *ngFor="let img of productChossen.images" swiperSlide>
+      <img [src]="img" alt="">
+    </ng-template>
+  </swiper>
+    <p>{{ productChossen.description }}</p>
+    <button (click)="updateProduct()" >editar</button>
+    <button (click)="deleteProduct()" >eliminar</button>
+  </div>
+</div>
