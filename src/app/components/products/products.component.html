@@ -11,17 +11,17 @@
 </div>
 <div class="products--detail" [class.active]="showProductDetail" >
   {{ statusDetile }}
-  <div *ngIf="productChossen" >
+  <div *ngIf="productChosen" >
     <button (click)="toggleProductDetail()" >close</button>
-    <h1>{{ productChossen.title }}</h1>
+    <h1>{{ productChosen.title }}</h1>
     <swiper
       [slidesPerView]="1"
     >
-    <ng-template *ngFor="let img of productChossen.images" swiperSlide>
+    <ng-template *ngFor="let img of productChosen.images" swiperSlide>
       <img [src]="img" alt="">
     </ng-template>
   </swiper>
-    <p>{{ productChossen.description }}</p>
+    <p>{{ productChosen.description }}</p>
     <button (click)="updateProduct()" >editar</button>
     <button (click)="deleteProduct()" >eliminar</button>
   </div>

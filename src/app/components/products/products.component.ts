@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Product, createProductDTO } from '../../models/product.model';
+import {
+  Product,
+  createProductDTO,
+  updateProductDTO,
+} from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -15,7 +19,7 @@ export class ProductsComponent implements OnInit {
   total = 0;
   products: Product[] = [];
   showProductDetail: boolean = false;
-  productChossen: Product = {
+  productChosen: Product = {
     id: '',
     price: 0,
     images: [],
@@ -56,15 +60,16 @@ export class ProductsComponent implements OnInit {
 
   onShowDetalle(id: string) {
     this.statusDetile = 'loading';
-    this.productsService.getProduct(id)
-    .subscribe((data) => {
-      this.toggleProductDetail();
-      this.productChossen = data;
-      this.statusDetile = 'success';
-    },error => {
-      window.alert(error)
-      this.statusDetile = 'error';
-    }
+    this.productsService.getProduct(id).subscribe(
+      (data) => {
+        this.toggleProductDetail();
+        this.productChosen = data;
+        this.statusDetile = 'success';
+      },
+      (error) => {
+        window.alert(error);
+        this.statusDetile = 'error';
+      }
     );
   }
 
@@ -82,23 +87,24 @@ export class ProductsComponent implements OnInit {
   }
 
   updateProduct() {
-    const changes = {
-      title: 'nuevo titulo',
+    const changes: updateProductDTO = {
+      title: 'change title',
     };
-    const id = this.productChossen.id;
+    const id = this.productChosen.id;
     this.productsService.update(id, changes).subscribe((data) => {
-      const productIndex = this.products.findIndex((item) => {
-        item.id === this.productChossen.id;
-        this.products[productIndex] = data;
-      });
+      const productIndex = this.products.findIndex(
+        (item) => item.id === this.productChosen.id
+      );
+      this.products[productIndex] = data;
+      this.productChosen = data;
     });
   }
 
   deleteProduct() {
-    const id = this.productChossen.id;
+    const id = this.productChosen.id;
     this.productsService.delete(id).subscribe(() => {
       const productIndex = this.products.findIndex((item) => {
-        item.id === this.productChossen.id;
+        item.id === this.productChosen.id;
       });
       this.products.splice(productIndex, 1);
       this.showProductDetail = false;
